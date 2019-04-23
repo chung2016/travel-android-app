@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">旅遊</string>
+    <string name="text_login">登入</string>
+    <string name="text_register">註冊</string>
+    <string name="text_email">電郵地址</string>
+    <string name="text_password">密碼</string>
+    <string name="text_username">用戶名稱</string>
+</resources>
