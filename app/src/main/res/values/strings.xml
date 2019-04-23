@@ -17,4 +17,9 @@
     <string name="text_author_comment">Author Comment</string>
     <string name="text_add">Add</string>
     <string name="text_photo">Photo</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="text_profile">Profile</string>
+    <string name="text_logout">Logout</string>
 </resources>

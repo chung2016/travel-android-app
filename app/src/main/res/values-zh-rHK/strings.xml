@@ -18,4 +18,9 @@
     <string name="text_author_comment">作者評論</string>
     <string name="text_add">新增</string>
     <string name="text_photo">圖片</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="text_profile">用戶資料</string>
+    <string name="text_logout">登出</string>
 </resources>
