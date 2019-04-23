@@ -5,4 +5,16 @@
     <string name="text_email">E-Mail</string>
     <string name="text_password">Password</string>
     <string name="text_username">User Name</string>
+    <string name="text_submit">Submit</string>
+    <string name="text_create">Create</string>
+    <string name="text_update">Update</string>
+    <string name="text_edit">Edit</string>
+    <string name="text_location">Location</string>
+    <string name="text_place">Place</string>
+    <string name="text_comment">Comment</string>
+    <string name="text_description">Description</string>
+    <string name="text_name">Name</string>
+    <string name="text_author_comment">Author Comment</string>
+    <string name="text_add">Add</string>
+    <string name="text_photo">Photo</string>
 </resources>

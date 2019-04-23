@@ -6,4 +6,16 @@
     <string name="text_email">電郵地址</string>
     <string name="text_password">密碼</string>
     <string name="text_username">用戶名稱</string>
+    <string name="text_submit">遞交</string>
+    <string name="text_create">創建</string>
+    <string name="text_update">更新</string>
+    <string name="text_edit">修改</string>
+    <string name="text_location">地點</string>
+    <string name="text_place">地方</string>
+    <string name="text_comment">評論</string>
+    <string name="text_description">描述</string>
+    <string name="text_name">名稱</string>
+    <string name="text_author_comment">作者評論</string>
+    <string name="text_add">新增</string>
+    <string name="text_photo">圖片</string>
 </resources>
