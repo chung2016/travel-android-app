@@ -14,9 +14,10 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.myapplication.fragment.PlaceFragment;
-import com.example.myapplication.fragment.ProfileFragment;
 import com.example.myapplication.R;
 import com.example.myapplication.utils.Constants;
 
@@ -24,7 +25,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SharedPreferences mSharedPreferences;
 
     private DrawerLayout drawer;
-
 
 
     private static MainActivity mActivity;
@@ -50,6 +50,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close
         );
+
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        View hView = navigationView.getHeaderView(0);
+        TextView nav_username = hView.findViewById(R.id.nav_username);
+        TextView nav_email = hView.findViewById(R.id.nav_email);
+        try {
+            nav_username.setText(mSharedPreferences.getString(Constants.SHARE_KEY_USERNAME, ""));
+            nav_email.setText(mSharedPreferences.getString(Constants.SHARE_KEY_EMAIL, ""));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         if (savedInstanceState == null) {
@@ -75,13 +88,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.nav_item_profile:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ProfileFragment()).commit();
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(intent);
                 break;
             case R.id.nav_item_place:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new PlaceFragment()).commit();
-
                 break;
             case R.id.nav_item_logout:
                 logout();
@@ -102,10 +114,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.miCreate) {
+            try {
+                Intent intent = new Intent(mActivity, PlaceEditActivity.class);
+                intent.putExtra("isEditPlace", false);
+                startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

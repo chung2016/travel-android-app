@@ -143,9 +143,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         try {
                                             String jsonWebToken = responseJsonBody.get("token").toString();
                                             String email = responseJsonBody.get("email").toString();
+                                            String username = responseJsonBody.get("username").toString();
                                             SharedPreferences.Editor editor = mSharedPreferences.edit();
                                             editor.putString(Constants.SHARE_KEY_TOKEN, jsonWebToken);
                                             editor.putString(Constants.SHARE_KEY_EMAIL, email);
+                                            editor.putString(Constants.SHARE_KEY_USERNAME, username);
                                             editor.commit();
                                             Helper.toast(mActivity, getResources().getString(R.string.login_success));
                                             enableForm();

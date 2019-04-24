@@ -28,4 +28,5 @@
     <string name="login_success">Login Success</string>
     <string name="register_success">Register Success</string>
     <string name="text_created_at">Created At</string>
+    <string name="update_success">Update success</string>
 </resources>
