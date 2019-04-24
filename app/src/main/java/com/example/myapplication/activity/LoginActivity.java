@@ -1,10 +1,13 @@
 package com.example.myapplication.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +29,8 @@ import static com.example.myapplication.utils.Validation.validateEmail;
 import static com.example.myapplication.utils.Validation.validateFields;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+    private SharedPreferences mSharedPreferences;
+
     private EditText mEtEmail;
     private EditText mEtPassword;
     private Button mBtLogin;
@@ -33,6 +38,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextInputLayout mTiEmail;
     private TextInputLayout mTiPassword;
     private ProgressBar mProgressBar;
+
+    private String jsonWebToken;
 
     LoginActivity mActivity;
 
@@ -42,7 +49,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         mActivity = this;
-
         mEtEmail = (EditText) findViewById(R.id.et_email);
         mEtPassword = (EditText) findViewById(R.id.et_password);
         mBtLogin = (Button) findViewById(R.id.btn_login);
@@ -52,6 +58,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mBtGoRegister = (Button) findViewById(R.id.btn_go_register);
         mBtLogin.setOnClickListener(this);
         mBtGoRegister.setOnClickListener(this);
+
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (mSharedPreferences.contains(Constants.SHARE_KEY_EMAIL)) {
+            mEtEmail.setText(mSharedPreferences.getString(Constants.SHARE_KEY_EMAIL, ""));
+        }
+        if (mSharedPreferences.contains(Constants.SHARE_KEY_TOKEN)) {
+            jsonWebToken = mSharedPreferences.getString(Constants.SHARE_KEY_TOKEN, "");
+        }
     }
 
     @Override
@@ -114,9 +129,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         JSONObject requestJsonBody = new JSONObject();
                         requestJsonBody.put("email", email);
                         requestJsonBody.put("password", password);
-                        Response response = ApiCall.postHttp(url, requestJsonBody.toString());
+                        Response response = ApiCall.postHttp(url, requestJsonBody.toString(), jsonWebToken);
 
-                        int responseCode = response.code();
+                        final int responseCode = response.code();
                         final JSONObject responseJsonBody = new JSONObject(response.body().string());
 
                         switch (responseCode) {
@@ -125,7 +140,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     @Override
                                     public void run() {
                                         try {
-                                            Helper.toast(mActivity, responseJsonBody.get("token").toString());
+                                            String jsonWebToken = responseJsonBody.get("token").toString();
+                                            String email = responseJsonBody.get("email").toString();
+                                            SharedPreferences.Editor editor = mSharedPreferences.edit();
+                                            editor.putString(Constants.SHARE_KEY_TOKEN, jsonWebToken);
+                                            editor.putString(Constants.SHARE_KEY_EMAIL, email);
+                                            editor.commit();
+                                            Helper.toast(mActivity, jsonWebToken);
+
+                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                            startActivity(intent);
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -174,4 +198,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mBtLogin.setEnabled(true);
         mProgressBar.setVisibility(View.GONE);
     }
+
 }

@@ -25,6 +25,6 @@
     <string name="text_logout">登出</string>
     <string name="text_setting">設定</string>
     <string name="network_connection">請檢查您的網絡連線然後再試一次</string>
-    <string name="login_fail">Login Fail</string>
+    <string name="login_fail">登入失敗 用戶資料不正確</string>
     <string name="login_success">Login Success</string>
 </resources>
