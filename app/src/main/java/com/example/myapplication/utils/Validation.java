@@ -1,0 +1,20 @@
+package com.example.myapplication.utils;
+
+import android.text.TextUtils;
+import android.util.Patterns;
+
+public class Validation {
+    public static boolean validateFields(String name) {
+        if (TextUtils.isEmpty(name)) {
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean validateEmail(String string) {
+        if (TextUtils.isEmpty(string) || !Patterns.EMAIL_ADDRESS.matcher(string).matches()) {
+            return false;
+        }
+        return true;
+    }
+}

@@ -1,4 +1,4 @@
-package com.example.myapplication.Activity;
+package com.example.myapplication.activity;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -11,10 +11,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.example.myapplication.Fragment.LoginFragment;
-import com.example.myapplication.Fragment.PlaceFragment;
-import com.example.myapplication.Fragment.ProfileFragment;
-import com.example.myapplication.Fragment.RegisterFragment;
+import com.example.myapplication.fragment.PlaceFragment;
+import com.example.myapplication.fragment.ProfileFragment;
 import com.example.myapplication.R;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -59,14 +57,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-            case R.id.nav_item_login:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new LoginFragment()).commit();
-                break;
-            case R.id.nav_item_register:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new RegisterFragment()).commit();
-                break;
             case R.id.nav_item_profile:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ProfileFragment()).commit();

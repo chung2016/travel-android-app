@@ -22,4 +22,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="text_profile">Profile</string>
     <string name="text_logout">Logout</string>
+    <string name="text_setting">Setting</string>
+    <string name="network_connection">Please check network connection and try again.</string>
+    <string name="login_fail">Login Fail</string>
+    <string name="login_success">Login Success</string>
 </resources>
