@@ -8,9 +8,8 @@
         android:id="@+id/iv_place_photo"
         android:layout_width="85dp"
         android:layout_height="85dp"
-        android:layout_margin="5dp"
-        android:background="@android:color/darker_gray"
-        android:padding="8dp" />
+        android:layout_margin="10dp"
+        android:background="@android:color/darker_gray" />
 
     <TextView
         android:id="@+id/tv_place_name"
