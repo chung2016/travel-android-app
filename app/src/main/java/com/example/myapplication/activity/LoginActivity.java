@@ -47,8 +47,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        setTitle(R.string.text_login);
         mActivity = this;
+
         mEtEmail = (EditText) findViewById(R.id.et_email);
         mEtPassword = (EditText) findViewById(R.id.et_password);
         mBtLogin = (Button) findViewById(R.id.btn_login);
@@ -146,7 +147,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             editor.putString(Constants.SHARE_KEY_TOKEN, jsonWebToken);
                                             editor.putString(Constants.SHARE_KEY_EMAIL, email);
                                             editor.commit();
-                                            Helper.toast(mActivity, jsonWebToken);
+                                            Helper.toast(mActivity, getResources().getString(R.string.login_success));
 
                                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                             startActivity(intent);

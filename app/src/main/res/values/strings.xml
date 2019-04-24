@@ -26,4 +26,5 @@
     <string name="network_connection">Please check network connection and try again.</string>
     <string name="login_fail">Login Fail, These credentials do not match our records.</string>
     <string name="login_success">Login Success</string>
+    <string name="register_success">Register Success</string>
 </resources>

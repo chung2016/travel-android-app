@@ -12,24 +12,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
 import com.example.myapplication.fragment.PlaceFragment;
 import com.example.myapplication.fragment.ProfileFragment;
 import com.example.myapplication.R;
-import com.example.myapplication.utils.ApiCall;
 import com.example.myapplication.utils.Constants;
-import com.example.myapplication.utils.Helper;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-
-import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
