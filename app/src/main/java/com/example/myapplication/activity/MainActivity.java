@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.myapplication.fragment.PlaceFragment;
@@ -20,10 +21,13 @@ import com.example.myapplication.R;
 import com.example.myapplication.utils.Constants;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private DrawerLayout drawer;
     private SharedPreferences mSharedPreferences;
-    MainActivity mActivity;
-    private String jsonWebToken;
+
+    private DrawerLayout drawer;
+
+
+
+    private static MainActivity mActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,14 +55,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new PlaceFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_item_place);
         }
+    }
 
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        if (mSharedPreferences.contains(Constants.SHARE_KEY_TOKEN)) {
-            jsonWebToken = mSharedPreferences.getString(Constants.SHARE_KEY_TOKEN, "");
-        }
+    public static MainActivity getInstance() {
+        return mActivity;
     }
 
     @Override
@@ -80,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_item_place:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new PlaceFragment()).commit();
+
                 break;
             case R.id.nav_item_logout:
                 logout();
@@ -96,6 +98,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         editor.apply();
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+
+        return true;
     }
 
 }

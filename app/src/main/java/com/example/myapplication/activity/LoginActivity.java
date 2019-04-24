@@ -148,6 +148,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             editor.putString(Constants.SHARE_KEY_EMAIL, email);
                                             editor.commit();
                                             Helper.toast(mActivity, getResources().getString(R.string.login_success));
+                                            enableForm();
 
                                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                             startActivity(intent);

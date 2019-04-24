@@ -27,4 +27,5 @@
     <string name="login_fail">Login Fail, These credentials do not match our records.</string>
     <string name="login_success">Login Success</string>
     <string name="register_success">Register Success</string>
+    <string name="text_created_at">Created At</string>
 </resources>
