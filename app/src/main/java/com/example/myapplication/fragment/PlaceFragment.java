@@ -1,20 +1,25 @@
 package com.example.myapplication.fragment;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.myapplication.ListView.PlaceList;
 import com.example.myapplication.ListView.PlaceListAdapter;
 import com.example.myapplication.R;
 import com.example.myapplication.activity.MainActivity;
+import com.example.myapplication.activity.PlaceDetailActivity;
+import com.example.myapplication.activity.ProfileActivity;
 import com.example.myapplication.utils.ApiCall;
 import com.example.myapplication.utils.Constants;
 import com.google.gson.Gson;
@@ -25,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Response;
+import okhttp3.internal.Internal;
 
 public class PlaceFragment extends Fragment {
     private SharedPreferences mSharedPreferences;
@@ -47,6 +53,15 @@ public class PlaceFragment extends Fragment {
         }
         lv_placeList = view.findViewById(R.id.lv_placeLists);
         updateList();
+
+        lv_placeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(mActivity, PlaceDetailActivity.class);
+                intent.putExtra("place_id",placeLists.get(position).getId());
+                startActivity(intent);
+            }
+        });
 
         return view;
     }

@@ -61,6 +61,7 @@ public class PlaceListAdapter extends BaseAdapter {
         SimpleDateFormat format = new SimpleDateFormat("MMMM dd, yyyy");
         String dateString = format.format(placeLists.get(position).getCreatedAt());
         tvPlaceDate.setText(dateString);
+
         return view;
     }
 

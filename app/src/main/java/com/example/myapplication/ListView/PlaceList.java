@@ -5,16 +5,18 @@ import java.util.Date;
 
 public class PlaceList {
 
+    private String id;
     private String name;
     private String location;
     private String photo;
     private Date createdAt;
 
-    public PlaceList(String name, String location, String photo) {
+    public PlaceList(String id, String name, String location, String photo) {
         this.name = name;
         this.location = location;
         this.photo = photo;
     }
+
 
     public String getName() {
         return name;
@@ -30,5 +32,9 @@ public class PlaceList {
 
     public Date getCreatedAt() {
         return createdAt;
+    }
+
+    public String getId() {
+        return id;
     }
 }
