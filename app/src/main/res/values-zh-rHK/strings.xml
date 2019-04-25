@@ -30,4 +30,5 @@
     <string name="register_success">註冊成功</string>
     <string name="text_created_at">發布於</string>
     <string name="update_success">修改成功</string>
+    <string name="text_back">返回</string>
 </resources>

@@ -122,8 +122,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void goToLogin() {
-        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-        startActivity(intent);
+        finish();
     }
 
     private void registerProcess(final String email, final String password, final String username) {
@@ -154,9 +153,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                             editor.putString(Constants.SHARE_KEY_EMAIL, email);
                                             editor.commit();
                                             Helper.toast(mActivity, getResources().getString(R.string.register_success));
-
-                                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                                            startActivity(intent);
+                                            finish();
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }

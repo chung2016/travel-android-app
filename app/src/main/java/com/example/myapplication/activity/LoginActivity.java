@@ -1,10 +1,15 @@
 package com.example.myapplication.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +35,7 @@ import static com.example.myapplication.utils.Validation.validateFields;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private SharedPreferences mSharedPreferences;
+    private final static int ALL_PERMISSIONS_RESULT = 101;
 
     private EditText mEtEmail;
     private EditText mEtPassword;
@@ -48,6 +54,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setTitle(R.string.text_login);
+        requestAppPermissions();
         mActivity = this;
 
         mEtEmail = (EditText) findViewById(R.id.et_email);
@@ -202,5 +209,42 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mBtLogin.setEnabled(true);
         mProgressBar.setVisibility(View.GONE);
     }
+
+    private void requestAppPermissions() {
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            return;
+        }
+
+        if (hasReadPermissions() && hasWritePermissions() && hasCameraPermissions()&&hasLocationPermissions()) {
+            return;
+        }
+
+        ActivityCompat.requestPermissions(this,
+                new String[]{
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                }, ALL_PERMISSIONS_RESULT); // your request code
+    }
+
+    private boolean hasReadPermissions() {
+        return (ContextCompat.checkSelfPermission(getBaseContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private boolean hasWritePermissions() {
+        return (ContextCompat.checkSelfPermission(getBaseContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private boolean hasCameraPermissions() {
+        return (ContextCompat.checkSelfPermission(getBaseContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private boolean hasLocationPermissions() {
+        return (ContextCompat.checkSelfPermission(getBaseContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+    }
+
+
+
 
 }

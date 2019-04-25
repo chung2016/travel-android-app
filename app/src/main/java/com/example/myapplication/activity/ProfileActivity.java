@@ -50,6 +50,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private Uri uri;
     private File file;
     private String path;
+    private Boolean isChangeImage;
 
     private ProfileActivity mActivity;
 
@@ -78,6 +79,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         setTitle(getResources().getString(R.string.text_profile));
 
         mActivity = this;
+        isChangeImage = false;
 
         mEtName = (EditText) findViewById(R.id.et_name);
         mEtEmail = (EditText) findViewById(R.id.et_email);
@@ -140,6 +142,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 }
             }
         }).start();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
     @Override
@@ -231,11 +239,44 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             public void run() {
                 if (Helper.isNetworkAvailable(mActivity)) {
                     try {
+                        if (isChangeImage == true) {
+                            String uploadUrl = Constants.BASE_URL + "upload";
+                            try {
+                                Response uploadResponse = ApiCall.postImg(uploadUrl, file, jsonWebToken);
+                                int uploadResponseCode = uploadResponse.code();
+                                final JSONObject uploadResponseJsonBody = new JSONObject(uploadResponse.body().string());
+                                if (uploadResponseCode!=200) {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                Helper.toast(mActivity, uploadResponseJsonBody.get("message").toString());
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                            enableForm();
+                                        }
+                                    });
+                                    return;
+                                } else {
+                                    image = uploadResponseJsonBody.get("file").toString();
+                                }
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
                         String url = Constants.BASE_URL + "users/" + userId;
                         JSONObject requestJsonBody = new JSONObject();
                         requestJsonBody.put("email", email);
                         requestJsonBody.put("password", password);
                         requestJsonBody.put("username", username);
+                        if (isChangeImage == true) {
+                            requestJsonBody.put("image", image);
+                        }
                         Response response = ApiCall.putHttp(url, requestJsonBody.toString(), jsonWebToken);
 
                         final int responseCode = response.code();
@@ -248,8 +289,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                                     public void run() {
                                         Helper.toast(mActivity, getResources().getString(R.string.update_success));
                                         enableForm();
-                                        Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
-                                        startActivity(intent);
+                                        finish();
                                     }
                                 });
                                 break;
@@ -319,6 +359,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                             .into(iv_profile_edit);
                 }
                 path = file.getPath();
+                isChangeImage = true;
                 break;
             case GALLERY_SELECT_REQUEST:
                 if (resultCode == RESULT_OK) {
@@ -332,6 +373,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                                 .into(iv_profile_edit);
                     }
                 }
+                isChangeImage = true;
                 break;
         }
     }
