@@ -187,7 +187,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 
         file = new File(Environment.getExternalStorageDirectory(), String.valueOf(System.currentTimeMillis()) + ".jpg");
-        uri = FileProvider.getUriForFile(this, "com.zhy.android7.fileprovider", file);
+        uri = FileProvider.getUriForFile(this, "com.travel.android7.fileprovider", file);
         intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, uri);
 
         startActivityForResult(intent, CAMERA_TAKE_REQUEST);
