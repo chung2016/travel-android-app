@@ -26,9 +26,16 @@
     <string name="text_setting">設定</string>
     <string name="network_connection">請檢查您的網絡連線然後再試一次</string>
     <string name="login_fail">登入失敗 用戶資料不正確</string>
-    <string name="login_success">Login Success</string>
+    <string name="login_success">登入成功</string>
     <string name="register_success">註冊成功</string>
     <string name="text_created_at">發布於</string>
     <string name="update_success">修改成功</string>
     <string name="text_back">返回</string>
+    <string name="name_empty">名稱不能為空白!</string>
+    <string name="email_valid">不是有效的電郵地址!</string>
+    <string name="password_empty">密碼不能為空白!</string>
+    <string name="data_valid">請輸入有效的資料!</string>
+    <string name="select_from_gallery">從圖片庫選取圖片</string>
+    <string name="capture_camera">使用相機拍攝照片</string>
+    <string name="select_action">選擇動作</string>
 </resources>

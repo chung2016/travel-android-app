@@ -96,17 +96,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         int err = 0;
         if (!validateEmail(email)) {
             err++;
-            mTiEmail.setError("Email should be valid !");
+            mTiEmail.setError(getResources().getText(R.string.email_valid));
         }
         if (!validateFields(password)) {
             err++;
-            mTiPassword.setError("Password should not be empty !");
+            mTiPassword.setError(getResources().getText(R.string.password_empty));
         }
         if (err == 0) {
             disableForm();
             loginProcess(email, password);
         } else {
-            showSnackBarMessage("Enter Valid Details !");
+            showSnackBarMessage((String) getResources().getText(R.string.password_empty));
         }
     }
 

@@ -164,10 +164,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     private void showPictureDialog() {
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
-        pictureDialog.setTitle("Select Action");
+        pictureDialog.setTitle(getResources().getText(R.string.select_action));
         String[] pictureDialogItems = {
-                "Select photo from Gallery",
-                "Capture photo from Camera"};
+                (String) getResources().getText(R.string.select_from_gallery),
+                (String) getResources().getText(R.string.capture_camera)
+        };
         pictureDialog.setItems(pictureDialogItems,
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -209,21 +210,21 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         int err = 0;
         if (!validateFields(name)) {
             err++;
-            mTiName.setError("Name should not be empty !");
+            mTiName.setError(getResources().getText(R.string.name_empty));
         }
         if (!validateEmail(email)) {
             err++;
-            mTiEmail.setError("Email should be valid !");
+            mTiEmail.setError(getResources().getText(R.string.email_valid));
         }
         if (!validateFields(password)) {
             err++;
-            mTiPassword.setError("Password should not be empty !");
+            mTiPassword.setError(getResources().getText(R.string.password_empty));
         }
         if (err == 0) {
             disableForm();
             submitProcess(email, password, name);
         } else {
-            showSnackBarMessage("Enter Valid Details !");
+            showSnackBarMessage((String) getResources().getText(R.string.password_empty));
         }
     }
 
@@ -245,7 +246,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                                 Response uploadResponse = ApiCall.postImg(uploadUrl, file, jsonWebToken);
                                 int uploadResponseCode = uploadResponse.code();
                                 final JSONObject uploadResponseJsonBody = new JSONObject(uploadResponse.body().string());
-                                if (uploadResponseCode!=200) {
+                                if (uploadResponseCode != 200) {
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {

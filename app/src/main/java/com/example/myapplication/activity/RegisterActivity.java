@@ -91,21 +91,21 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         int err = 0;
         if (!validateFields(name)) {
             err++;
-            mTiName.setError("Name should not be empty !");
+            mTiName.setError(getResources().getText(R.string.name_empty));
         }
         if (!validateEmail(email)) {
             err++;
-            mTiEmail.setError("Email should be valid !");
+            mTiEmail.setError(getResources().getText(R.string.email_valid));
         }
         if (!validateFields(password)) {
             err++;
-            mTiPassword.setError("Password should not be empty !");
+            mTiPassword.setError(getResources().getText(R.string.password_empty));
         }
         if (err == 0) {
             disableForm();
             registerProcess(email, password, name);
         } else {
-            showSnackBarMessage("Enter Valid Details !");
+            showSnackBarMessage((String) getResources().getText(R.string.password_empty));
         }
     }
 

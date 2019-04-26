@@ -30,4 +30,11 @@
     <string name="text_created_at">Created At</string>
     <string name="update_success">Update success</string>
     <string name="text_back">Back</string>
+    <string name="name_empty">Name should not be empty !</string>
+    <string name="email_valid">Email should be valid !</string>
+    <string name="password_empty">Password should not be empty !</string>
+    <string name="data_valid">Enter Valid Details !</string>
+    <string name="select_from_gallery">Select photo from Gallery</string>
+    <string name="capture_camera">Capture photo from Camera</string>
+    <string name="select_action">Select Action</string>
 </resources>
