@@ -15,7 +15,6 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,8 +26,8 @@ import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
 import com.example.myapplication.utils.ApiCall;
 import com.example.myapplication.utils.Constants;
-import com.example.myapplication.utils.DownLoadImageTask;
 import com.example.myapplication.utils.Helper;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -110,28 +109,38 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void run() {
                 try {
-                    Response response = ApiCall.getHttp(getCurrentUser, jsonWebToken);
+                    final Response response = ApiCall.getHttp(getCurrentUser, jsonWebToken);
                     final String responseBody = response.body().string();
+                    final int responseCode = response.code();
                     final JSONObject responseJsonBody = new JSONObject(responseBody);
 
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            try {
-                                userId = responseJsonBody.get("id").toString();
-                                username = responseJsonBody.get("username").toString();
-                                email = responseJsonBody.get("email").toString();
+                            if (responseCode == 200) {
+                                try {
+                                    userId = responseJsonBody.get("id").toString();
+                                    username = responseJsonBody.get("username").toString();
+                                    email = responseJsonBody.get("email").toString();
 
-                                mEtEmail.setText(email);
-                                mEtName.setText(username);
-                                if (responseJsonBody.get("image") != null) {
-                                    image = responseJsonBody.get("image").toString();
-                                    new DownLoadImageTask(iv_profile_edit).execute(image);
+                                    mEtEmail.setText(email);
+                                    mEtName.setText(username);
+                                    if (responseJsonBody.get("image") != null) {
+                                        image = responseJsonBody.get("image").toString();
+                                        Picasso.get().load(image).fit().into(iv_profile_edit);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                            } else {
+                                try {
+                                    Helper.toast(mActivity, responseJsonBody.get("message").toString());
+                                    finish();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     });

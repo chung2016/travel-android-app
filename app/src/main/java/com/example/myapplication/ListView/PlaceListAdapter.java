@@ -1,7 +1,6 @@
 package com.example.myapplication.ListView;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -10,14 +9,10 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.activity.MainActivity;
-import com.example.myapplication.utils.DownLoadImageTask;
+import com.squareup.picasso.Picasso;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 public class PlaceListAdapter extends BaseAdapter {
     private Context mContext;
@@ -57,7 +52,8 @@ public class PlaceListAdapter extends BaseAdapter {
 
         tvPlaceName.setText(placeLists.get(position).getName());
         tvPlaceLocation.setText(placeLists.get(position).getLocation());
-        new DownLoadImageTask(ivPlacePhoto).execute(placeLists.get(position).getPhoto());
+        Picasso.get().load(placeLists.get(position).getPhoto()).fit().into(ivPlacePhoto);
+
         SimpleDateFormat format = new SimpleDateFormat("MMMM dd, yyyy");
         String dateString = format.format(placeLists.get(position).getCreatedAt());
         tvPlaceDate.setText(dateString);
