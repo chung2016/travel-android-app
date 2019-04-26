@@ -1,6 +1,7 @@
 package com.example.myapplication.activity;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,11 +20,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
+import com.example.myapplication.models.User;
 import com.example.myapplication.utils.ApiCall;
 import com.example.myapplication.utils.Constants;
 import com.example.myapplication.utils.Helper;
@@ -41,7 +43,10 @@ import static com.example.myapplication.utils.Validation.validateEmail;
 import static com.example.myapplication.utils.Validation.validateFields;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
+    private ProfileActivity mActivity;
+    private ProgressDialog loadingDialog;
     private SharedPreferences mSharedPreferences;
+    private String jsonWebToken;
 
     private static final int CAMERA_TAKE_REQUEST = 200;
     private static final int GALLERY_SELECT_REQUEST = 100;
@@ -51,13 +56,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private String path;
     private Boolean isChangeImage;
 
-    private ProfileActivity mActivity;
-
-    private String jsonWebToken;
-    private String userId;
-    private String username;
-    private String email;
-    private String image;
+    private User user;
 
     private EditText mEtName;
     private EditText mEtEmail;
@@ -66,10 +65,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private TextInputLayout mTiName;
     private TextInputLayout mTiEmail;
     private TextInputLayout mTiPassword;
-    private ProgressBar mProgressBar;
     private ImageView iv_profile_edit;
+    private RadioButton radio_male;
+    private RadioButton radio_female;
 
-    RelativeLayout rl_profile_image;
+    private RelativeLayout rl_profile_image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,18 +77,24 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_profile);
         setTitle(getResources().getString(R.string.text_profile));
 
+        user = new User();
+
         mActivity = this;
         isChangeImage = false;
+
+        loadingDialog = ProgressDialog.show(mActivity, "",
+                getResources().getString(R.string.loading), true);
 
         mEtName = (EditText) findViewById(R.id.et_name);
         mEtEmail = (EditText) findViewById(R.id.et_email);
         mEtPassword = (EditText) findViewById(R.id.et_password);
         mBtSubmit = (Button) findViewById(R.id.btn_submit);
+        radio_male = (RadioButton) findViewById(R.id.radio_male);
+        radio_female = (RadioButton) findViewById(R.id.radio_female);
 
         mTiName = (TextInputLayout) findViewById(R.id.ti_name);
         mTiEmail = (TextInputLayout) findViewById(R.id.ti_email);
         mTiPassword = (TextInputLayout) findViewById(R.id.ti_password);
-        mProgressBar = (ProgressBar) findViewById(R.id.progress);
 
         iv_profile_edit = (ImageView) findViewById(R.id.iv_profile_edit);
         rl_profile_image = (RelativeLayout) findViewById(R.id.rl_profile_image);
@@ -103,7 +109,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         setProfile();
     }
 
-    private void setProfile() {
+    public void setProfile() {
         final String getCurrentUser = Constants.BASE_URL + "users/current";
         new Thread(new Runnable() {
             @Override
@@ -119,16 +125,33 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         public void run() {
                             if (responseCode == 200) {
                                 try {
-                                    userId = responseJsonBody.get("id").toString();
-                                    username = responseJsonBody.get("username").toString();
-                                    email = responseJsonBody.get("email").toString();
-
-                                    mEtEmail.setText(email);
-                                    mEtName.setText(username);
-                                    if (responseJsonBody.get("image") != null) {
-                                        image = responseJsonBody.get("image").toString();
-                                        Picasso.get().load(image).fit().into(iv_profile_edit);
+                                    user.setId(responseJsonBody.get("id").toString());
+                                    user.setUsername(responseJsonBody.get("username").toString());
+                                    user.setEmail(responseJsonBody.get("email").toString());
+                                    user.setGender(responseJsonBody.get("gender").toString());
+                                    if (responseJsonBody.has("image")) {
+                                        user.setImage(responseJsonBody.get("image").toString());
                                     }
+                                    switch (user.getGender()) {
+                                        case "Male":
+                                            radio_male.setChecked(true);
+                                            break;
+                                        case "Female":
+                                            radio_female.setChecked(true);
+                                            break;
+                                    }
+
+                                    mEtEmail.setText(user.getEmail());
+                                    mEtName.setText(user.getUsername());
+                                    if (user.getImage() != null) {
+                                        Picasso
+                                                .get()
+                                                .load(user.getImage())
+                                                .fit()
+                                                .error(R.drawable.error)
+                                                .into(iv_profile_edit);
+                                    }
+
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 } catch (Exception e) {
@@ -149,6 +172,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                loadingDialog.dismiss();
             }
         }).start();
     }
@@ -201,6 +225,21 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         pictureDialog.show();
     }
 
+    public void onRadioButtonClicked(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+
+        switch (view.getId()) {
+            case R.id.radio_male:
+                if (checked)
+                    user.setGender("Male");
+                break;
+            case R.id.radio_female:
+                if (checked)
+                    user.setGender("Female");
+                break;
+        }
+    }
+
     private void launchCamera() {
         Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -213,27 +252,27 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     private void submit() {
         setError();
-        String name = mEtName.getText().toString();
-        String email = mEtEmail.getText().toString();
-        String password = mEtPassword.getText().toString();
+        user.setUsername(mEtName.getText().toString());
+        user.setEmail(mEtEmail.getText().toString());
+        user.setPassword(mEtPassword.getText().toString());
         int err = 0;
-        if (!validateFields(name)) {
+        if (!validateFields(user.getUsername())) {
             err++;
             mTiName.setError(getResources().getText(R.string.name_empty));
         }
-        if (!validateEmail(email)) {
+        if (!validateEmail(user.getEmail())) {
             err++;
             mTiEmail.setError(getResources().getText(R.string.email_valid));
         }
-        if (!validateFields(password)) {
+        if (!validateFields(user.getPassword())) {
             err++;
             mTiPassword.setError(getResources().getText(R.string.password_empty));
         }
         if (err == 0) {
             disableForm();
-            submitProcess(email, password, name);
+            submitProcess();
         } else {
-            showSnackBarMessage((String) getResources().getText(R.string.password_empty));
+            showSnackBarMessage((String) getResources().getText(R.string.data_valid));
         }
     }
 
@@ -243,7 +282,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         mTiPassword.setError(null);
     }
 
-    private void submitProcess(final String email, final String password, final String username) {
+    private void submitProcess() {
+
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -269,7 +310,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                                     });
                                     return;
                                 } else {
-                                    image = uploadResponseJsonBody.get("file").toString();
+                                    user.setImage(uploadResponseJsonBody.get("file").toString());
                                 }
 
                             } catch (IOException e) {
@@ -279,13 +320,15 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                             }
                         }
 
-                        String url = Constants.BASE_URL + "users/" + userId;
+                        String url = Constants.BASE_URL + "users/" + user.getId();
                         JSONObject requestJsonBody = new JSONObject();
-                        requestJsonBody.put("email", email);
-                        requestJsonBody.put("password", password);
-                        requestJsonBody.put("username", username);
+                        requestJsonBody.put("email", user.getEmail());
+                        requestJsonBody.put("username", user.getUsername());
+                        requestJsonBody.put("password", user.getPassword());
+                        requestJsonBody.put("gender", user.getGender());
+
                         if (isChangeImage == true) {
-                            requestJsonBody.put("image", image);
+                            requestJsonBody.put("image", user.getImage());
                         }
                         Response response = ApiCall.putHttp(url, requestJsonBody.toString(), jsonWebToken);
 
@@ -342,19 +385,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void disableForm() {
-        mEtEmail.setEnabled(false);
-        mEtPassword.setEnabled(false);
-        mEtName.setEnabled(false);
-        mBtSubmit.setEnabled(false);
-        mProgressBar.setVisibility(View.VISIBLE);
+        loadingDialog.show();
     }
 
     private void enableForm() {
-        mEtEmail.setEnabled(true);
-        mEtPassword.setEnabled(true);
-        mEtName.setEnabled(true);
-        mBtSubmit.setEnabled(true);
-        mProgressBar.setVisibility(View.GONE);
+        loadingDialog.dismiss();
     }
 
     @Override

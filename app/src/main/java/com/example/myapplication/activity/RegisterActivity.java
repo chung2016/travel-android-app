@@ -1,5 +1,6 @@
 package com.example.myapplication.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -7,12 +8,17 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
+import com.example.myapplication.models.User;
 import com.example.myapplication.utils.ApiCall;
 import com.example.myapplication.utils.Constants;
 import com.example.myapplication.utils.Helper;
@@ -28,22 +34,24 @@ import static com.example.myapplication.utils.Validation.validateEmail;
 import static com.example.myapplication.utils.Validation.validateFields;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
+    private RegisterActivity mActivity;
     private SharedPreferences mSharedPreferences;
+    private String jsonWebToken;
+
+    private ProgressDialog loadingDialog;
 
     private EditText mEtName;
     private EditText mEtEmail;
     private EditText mEtPassword;
     private Button mBtRegister;
     private Button mBtGoLogin;
+
     private TextInputLayout mTiName;
     private TextInputLayout mTiEmail;
     private TextInputLayout mTiPassword;
-    private ProgressBar mProgressBar;
 
 
-    private String jsonWebToken;
-
-    RegisterActivity mActivity;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,15 +60,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         setTitle(R.string.text_register);
         mActivity = this;
 
+//        Input field
         mEtName = (EditText) findViewById(R.id.et_name);
         mEtEmail = (EditText) findViewById(R.id.et_email);
         mEtPassword = (EditText) findViewById(R.id.et_password);
         mBtRegister = (Button) findViewById(R.id.btn_register);
         mBtGoLogin = (Button) findViewById(R.id.btn_go_login);
+//          Input layout
         mTiName = (TextInputLayout) findViewById(R.id.ti_name);
         mTiEmail = (TextInputLayout) findViewById(R.id.ti_email);
         mTiPassword = (TextInputLayout) findViewById(R.id.ti_password);
-        mProgressBar = (ProgressBar) findViewById(R.id.progress);
+//init user model
+        user = new User();
 
         mBtRegister.setOnClickListener(this);
         mBtGoLogin.setOnClickListener(this);
@@ -83,29 +94,45 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    public void onRadioButtonClicked(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+
+        switch (view.getId()) {
+            case R.id.radio_male:
+                if (checked)
+                    user.setGender("Male");
+                break;
+            case R.id.radio_female:
+                if (checked)
+                    user.setGender("Female");
+                break;
+        }
+    }
+
     private void register() {
         setError();
-        String name = mEtName.getText().toString();
-        String email = mEtEmail.getText().toString();
-        String password = mEtPassword.getText().toString();
+        user.setUsername(mEtName.getText().toString());
+        user.setEmail(mEtEmail.getText().toString());
+        user.setPassword(mEtPassword.getText().toString());
+
         int err = 0;
-        if (!validateFields(name)) {
+        if (!validateFields(user.getUsername())) {
             err++;
             mTiName.setError(getResources().getText(R.string.name_empty));
         }
-        if (!validateEmail(email)) {
+        if (!validateEmail(user.getEmail())) {
             err++;
             mTiEmail.setError(getResources().getText(R.string.email_valid));
         }
-        if (!validateFields(password)) {
+        if (!validateFields(user.getPassword())) {
             err++;
             mTiPassword.setError(getResources().getText(R.string.password_empty));
         }
         if (err == 0) {
             disableForm();
-            registerProcess(email, password, name);
+            registerProcess();
         } else {
-            showSnackBarMessage((String) getResources().getText(R.string.password_empty));
+            showSnackBarMessage((String) getResources().getText(R.string.data_valid));
         }
     }
 
@@ -125,7 +152,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         finish();
     }
 
-    private void registerProcess(final String email, final String password, final String username) {
+    private void registerProcess() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -134,9 +161,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     try {
                         String url = Constants.BASE_URL + "users/register";
                         JSONObject requestJsonBody = new JSONObject();
-                        requestJsonBody.put("email", email);
-                        requestJsonBody.put("password", password);
-                        requestJsonBody.put("username", username);
+                        requestJsonBody.put("email", user.getEmail());
+                        requestJsonBody.put("password", user.getPassword());
+                        requestJsonBody.put("username", user.getUsername());
+                        requestJsonBody.put("gender", user.getGender());
+
                         Response response = ApiCall.postHttp(url, requestJsonBody.toString(), jsonWebToken);
 
                         final int responseCode = response.code();
@@ -194,16 +223,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void disableForm() {
-        mEtEmail.setEnabled(false);
-        mEtPassword.setEnabled(false);
-        mEtName.setEnabled(false);
-        mProgressBar.setVisibility(View.VISIBLE);
+        loadingDialog = ProgressDialog.show(mActivity, "",
+                getResources().getString(R.string.loading), true);
     }
 
     private void enableForm() {
-        mEtEmail.setEnabled(true);
-        mEtPassword.setEnabled(true);
-        mEtName.setEnabled(true);
-        mProgressBar.setVisibility(View.GONE);
+        loadingDialog.dismiss();
     }
 }

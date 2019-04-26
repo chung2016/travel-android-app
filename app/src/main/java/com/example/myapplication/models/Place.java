@@ -1,9 +1,8 @@
-package com.example.myapplication.ListView;
+package com.example.myapplication.models;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class PlaceList {
+public class Place {
 
     private String id;
     private String name;
@@ -11,12 +10,11 @@ public class PlaceList {
     private String photo;
     private Date createdAt;
 
-    public PlaceList(String id, String name, String location, String photo) {
+    public Place(String id, String name, String location, String photo) {
         this.name = name;
         this.location = location;
         this.photo = photo;
     }
-
 
     public String getName() {
         return name;

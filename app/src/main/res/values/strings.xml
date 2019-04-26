@@ -37,4 +37,8 @@
     <string name="select_from_gallery">Select photo from Gallery</string>
     <string name="capture_camera">Capture photo from Camera</string>
     <string name="select_action">Select Action</string>
+    <string name="loading">Loading. Please wait...</string>
+    <string name="text_male">Male</string>
+    <string name="text_female">Famale</string>
+    <string name="login_again">Please login again</string>
 </resources>

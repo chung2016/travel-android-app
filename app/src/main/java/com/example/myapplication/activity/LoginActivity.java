@@ -1,6 +1,7 @@
 package com.example.myapplication.activity;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -12,13 +13,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.example.myapplication.R;
+import com.example.myapplication.models.User;
 import com.example.myapplication.utils.ApiCall;
 import com.example.myapplication.utils.Constants;
 import com.example.myapplication.utils.Helper;
@@ -36,6 +37,8 @@ import static com.example.myapplication.utils.Validation.validateFields;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private SharedPreferences mSharedPreferences;
     private final static int ALL_PERMISSIONS_RESULT = 101;
+    private ProgressDialog loadingDialog;
+    private User user;
 
     private EditText mEtEmail;
     private EditText mEtPassword;
@@ -54,6 +57,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setTitle(R.string.text_login);
+        user = new User();
         requestAppPermissions();
         mActivity = this;
 
@@ -91,20 +95,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void login() {
         setError();
-        String email = mEtEmail.getText().toString();
-        String password = mEtPassword.getText().toString();
+        user.setEmail(mEtEmail.getText().toString());
+        user.setPassword(mEtPassword.getText().toString());
         int err = 0;
-        if (!validateEmail(email)) {
+        if (!validateEmail(user.getEmail())) {
             err++;
             mTiEmail.setError(getResources().getText(R.string.email_valid));
         }
-        if (!validateFields(password)) {
+        if (!validateFields(user.getPassword())) {
             err++;
             mTiPassword.setError(getResources().getText(R.string.password_empty));
         }
         if (err == 0) {
             disableForm();
-            loginProcess(email, password);
+            loginProcess();
         } else {
             showSnackBarMessage((String) getResources().getText(R.string.password_empty));
         }
@@ -126,17 +130,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         startActivity(intent);
     }
 
-    private void loginProcess(final String email, final String password) {
+    private void loginProcess() {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 if (Helper.isNetworkAvailable(mActivity)) {
-
                     try {
                         String url = Constants.BASE_URL + "users/authenticate";
                         JSONObject requestJsonBody = new JSONObject();
-                        requestJsonBody.put("email", email);
-                        requestJsonBody.put("password", password);
+                        requestJsonBody.put("email", user.getEmail());
+                        requestJsonBody.put("password", user.getPassword());
                         Response response = ApiCall.postHttp(url, requestJsonBody.toString(), jsonWebToken);
 
                         final int responseCode = response.code();
@@ -148,14 +151,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     @Override
                                     public void run() {
                                         try {
-                                            String jsonWebToken = responseJsonBody.get("token").toString();
-                                            String email = responseJsonBody.get("email").toString();
-                                            String username = responseJsonBody.get("username").toString();
+                                            jsonWebToken = responseJsonBody.get("token").toString();
+                                            user.setEmail(responseJsonBody.get("email").toString());
+                                            user.setUsername(responseJsonBody.get("username").toString());
+
                                             SharedPreferences.Editor editor = mSharedPreferences.edit();
                                             editor.putString(Constants.SHARE_KEY_TOKEN, jsonWebToken);
-                                            editor.putString(Constants.SHARE_KEY_EMAIL, email);
-                                            editor.putString(Constants.SHARE_KEY_USERNAME, username);
+                                            editor.putString(Constants.SHARE_KEY_EMAIL, user.getEmail());
                                             editor.commit();
+
                                             Helper.toast(mActivity, getResources().getString(R.string.login_success));
                                             enableForm();
 
@@ -197,17 +201,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void disableForm() {
-        mEtEmail.setEnabled(false);
-        mEtPassword.setEnabled(false);
-        mBtLogin.setEnabled(false);
-        mProgressBar.setVisibility(View.VISIBLE);
+        loadingDialog = ProgressDialog.show(mActivity, "",
+                getResources().getString(R.string.loading), true);
     }
 
     private void enableForm() {
-        mEtEmail.setEnabled(true);
-        mEtPassword.setEnabled(true);
-        mBtLogin.setEnabled(true);
-        mProgressBar.setVisibility(View.GONE);
+        loadingDialog.dismiss();
     }
 
     private void requestAppPermissions() {
@@ -215,10 +214,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
-        if (hasReadPermissions() && hasWritePermissions() && hasCameraPermissions()&&hasLocationPermissions()) {
+        if (hasReadPermissions() && hasWritePermissions() && hasCameraPermissions() && hasLocationPermissions()) {
             return;
         }
-
         ActivityCompat.requestPermissions(this,
                 new String[]{
                         Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -243,8 +241,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private boolean hasLocationPermissions() {
         return (ContextCompat.checkSelfPermission(getBaseContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
     }
-
-
 
 
 }

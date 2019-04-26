@@ -75,11 +75,35 @@
 
             </android.support.design.widget.TextInputLayout>
 
+            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/gender_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ti_password"
+                android:layout_marginTop="@dimen/child_margin_top"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/radio_male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:onClick="onRadioButtonClicked"
+                    android:text="@string/text_male" />
+
+                <RadioButton
+                    android:id="@+id/radio_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onRadioButtonClicked"
+                    android:text="@string/text_female" />
+            </RadioGroup>
+
             <Button
                 android:id="@+id/btn_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ti_password"
+                android:layout_below="@+id/gender_group"
                 android:layout_marginTop="@dimen/button_margin"
                 android:paddingLeft="@dimen/button_padding"
                 android:paddingRight="@dimen/button_padding"
@@ -94,15 +118,6 @@
                 android:paddingLeft="@dimen/button_padding"
                 android:paddingRight="@dimen/button_padding"
                 android:text="@string/text_back" />
-
-            <ProgressBar
-                android:id="@+id/progress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/btn_go_login"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/button_margin"
-                android:visibility="gone" />
 
         </RelativeLayout>
     </LinearLayout>

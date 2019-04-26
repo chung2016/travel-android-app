@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.activity.MainActivity;
+import com.example.myapplication.models.Place;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -16,24 +17,24 @@ import java.util.List;
 
 public class PlaceListAdapter extends BaseAdapter {
     private Context mContext;
-    private List<PlaceList> placeLists;
+    private List<Place> places;
 
     MainActivity mainActivity;
 
-    public PlaceListAdapter(MainActivity mainActivity, List<PlaceList> placeLists) {
+    public PlaceListAdapter(MainActivity mainActivity, List<Place> places) {
         this.mainActivity = mainActivity;
         this.mContext = mainActivity.getApplicationContext();
-        this.placeLists = placeLists;
+        this.places = places;
     }
 
     @Override
     public int getCount() {
-        return placeLists.size();
+        return places.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return placeLists.get(position);
+        return places.get(position);
     }
 
     @Override
@@ -50,12 +51,17 @@ public class PlaceListAdapter extends BaseAdapter {
         TextView tvPlaceDate = view.findViewById(R.id.tv_place_date);
 
 
-        tvPlaceName.setText(placeLists.get(position).getName());
-        tvPlaceLocation.setText(placeLists.get(position).getLocation());
-        Picasso.get().load(placeLists.get(position).getPhoto()).fit().into(ivPlacePhoto);
+        tvPlaceName.setText(places.get(position).getName());
+        tvPlaceLocation.setText(places.get(position).getLocation());
+        Picasso
+                .get()
+                .load(places.get(position).getPhoto())
+                .fit()
+                .error(R.drawable.error)
+                .into(ivPlacePhoto);
 
         SimpleDateFormat format = new SimpleDateFormat("MMMM dd, yyyy");
-        String dateString = format.format(placeLists.get(position).getCreatedAt());
+        String dateString = format.format(places.get(position).getCreatedAt());
         tvPlaceDate.setText(dateString);
 
         return view;
