@@ -8,12 +8,15 @@ public class Place {
     private String name;
     private String location;
     private String photo;
+    private String description;
+    private String authorComment;
+    private User author;
+    private String type;
+    private Date updatedAt;
     private Date createdAt;
 
-    public Place(String id, String name, String location, String photo) {
-        this.name = name;
-        this.location = location;
-        this.photo = photo;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -34,5 +37,25 @@ public class Place {
 
     public String getId() {
         return id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getAuthorComment() {
+        return authorComment;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public String getType() {
+        return type;
     }
 }

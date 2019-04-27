@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         getCurrentUser();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,

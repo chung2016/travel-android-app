@@ -74,8 +74,10 @@ public class PlaceFragment extends Fragment {
                 try {
                     Response response = ApiCall.getHttp(getAllurl, jsonWebToken);
                     String responseBody = response.body().string();
+
+
                     Gson gson = new Gson();
-                    places = new ArrayList<>();
+                    places = new ArrayList<Place>();
                     places = gson.fromJson(responseBody, new TypeToken<List<Place>>() {}.getType());
 
                     mActivity.runOnUiThread(new Runnable() {

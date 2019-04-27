@@ -42,4 +42,7 @@
     <string name="text_male">男性</string>
     <string name="text_female">女性</string>
     <string name="login_again">請重新再登入一次</string>
+    <string name="text_share">分享</string>
+    <string name="text_type">類型</string>
+    <string name="author_comment">作者評論</string>
 </resources>

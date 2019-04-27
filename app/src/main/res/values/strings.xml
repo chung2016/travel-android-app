@@ -41,4 +41,7 @@
     <string name="text_male">Male</string>
     <string name="text_female">Famale</string>
     <string name="login_again">Please login again</string>
+    <string name="text_share">Share</string>
+    <string name="text_type">Type</string>
+    <string name="author_comment">Author Comment</string>
 </resources>
