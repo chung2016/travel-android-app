@@ -60,4 +60,10 @@
         <item>Adventurer</item>
     </string-array>
     <string name="add_success">Add Success</string>
+    <string name="text_gender">Gender</string>
+    <string name="text_delete">Delete</string>
+    <string name="text_confirm">Confirm</string>
+    <string name="confirm_delete">Do you really want to delete place?</string>
+    <string name="delete_success">Delete Success</string>
+    <string name="current_location">Current Location</string>
 </resources>

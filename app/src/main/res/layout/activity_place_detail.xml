@@ -18,7 +18,6 @@
             android:layout_alignLeft="@+id/tv_name"
             android:layout_marginTop="@dimen/child_margin_top"
             android:text="created at"
-            android:textColor="@android:color/holo_red_light"
             android:textSize="15dp" />
 
         <LinearLayout
@@ -43,11 +42,16 @@
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/tv_name"
                 android:layout_marginTop="@dimen/child_margin_top"
-                android:text="username"
-                android:textColor="@android:color/holo_red_light"
+                android:layout_marginRight="@dimen/list_view_margin"
+                android:text="@string/text_username"
                 android:textSize="15dp" />
 
-
+            <TextView
+                android:id="@+id/tv_user_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/child_margin_top"
+                android:text="@string/text_gender" />
         </LinearLayout>
 
         <ImageView
@@ -180,11 +184,32 @@
             android:textSize="16dp" />
 
         <!--<FrameLayout-->
-            <!--android:id="@+id/fragment_container"-->
-            <!--android:layout_below="@+id/tv_author_comment"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent" />-->
+        <!--android:id="@+id/fragment_container"-->
+        <!--android:layout_below="@+id/tv_author_comment"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" />-->
+        <LinearLayout
+            android:id="@+id/place_btn_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_author_comment"
+            android:layout_marginTop="@dimen/child_margin_top"
+            android:layout_marginBottom="@dimen/child_margin_top"
+            android:gravity="center|center_horizontal"
+            android:orientation="horizontal">
 
+            <Button
+                android:id="@+id/btn_place_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_update" />
+
+            <Button
+                android:id="@+id/btn_place_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_delete" />
+        </LinearLayout>
     </RelativeLayout>
 
 </ScrollView>

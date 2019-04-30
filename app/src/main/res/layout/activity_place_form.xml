@@ -54,21 +54,36 @@
                 android:inputType="text" />
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/til_place_location"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/child_margin_top">
+            android:gravity="center|bottom"
+            android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/et_place_location"
-                android:layout_width="match_parent"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/til_place_location"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:drawableRight="@drawable/location"
-                android:hint="@string/text_location"
-                android:inputType="text" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_marginTop="@dimen/child_margin_top"
+                android:layout_weight=".70">
 
+                <EditText
+                    android:id="@+id/et_place_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/location"
+                    android:hint="@string/text_location"
+                    android:inputType="text" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/get_current_location"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".30"
+                android:textSize="10dp"
+                android:text="@string/current_location" />
+        </LinearLayout>
 
         <Spinner
             android:id="@+id/s_place_type"
