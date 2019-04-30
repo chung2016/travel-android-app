@@ -58,4 +58,40 @@ public class Place {
     public String getType() {
         return type;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setAuthorComment(String authorComment) {
+        this.authorComment = authorComment;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 }

@@ -67,12 +67,12 @@ public class PlaceFragment extends Fragment {
     }
 
     public void updateList() {
-        final String getAllurl = Constants.BASE_URL + "places";
+        final String getAllUrl = Constants.BASE_URL + "places";
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Response response = ApiCall.getHttp(getAllurl, jsonWebToken);
+                    Response response = ApiCall.getHttp(getAllUrl, jsonWebToken);
                     String responseBody = response.body().string();
 
 

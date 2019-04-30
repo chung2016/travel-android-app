@@ -1,40 +1,61 @@
 package com.example.myapplication.models;
 
+import java.util.Date;
+
 public class Comment {
     private String id;
-    private String place_id;
-    private String user;
+    private User user;
     private String message;
+    private String place;
+    private Date createdAt;
+    private Date updatedAt;
 
-    public String getId() {
-        return id;
-    }
 
     public void setId(String id) {
         this.id = id;
     }
 
-    public String getPlace_id() {
-        return place_id;
-    }
-
-    public void setPlace_id(String place_id) {
-        this.place_id = place_id;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
+    public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public User getUser() {
+        return user;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public String getPlace() {
+        return place;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

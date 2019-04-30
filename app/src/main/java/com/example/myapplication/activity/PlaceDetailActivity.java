@@ -2,7 +2,6 @@ package com.example.myapplication.activity;
 
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,11 +27,12 @@ import java.text.SimpleDateFormat;
 import okhttp3.Response;
 
 public class PlaceDetailActivity extends AppCompatActivity implements View.OnClickListener {
+    private static PlaceDetailActivity mActivity;
+
     private Place place;
     private SharedPreferences mSharedPreferences;
     private ProgressDialog loadingDialog;
     private String jsonWebToken;
-    private PlaceDetailActivity mActivity;
 
     private TextView tv_created_at;
     private ImageView iv_photo;
@@ -58,8 +58,20 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
         if (mSharedPreferences.contains(Constants.SHARE_KEY_TOKEN)) {
             jsonWebToken = mSharedPreferences.getString(Constants.SHARE_KEY_TOKEN, "");
         }
+
+        Bundle bundle = new Bundle();
+        bundle.putString("place_id", place.getId());
+//        CommentFragment commentFragment = new CommentFragment();
+//        commentFragment.setArguments(bundle);
+//        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+//                commentFragment).commit();
+
         initView();
         loadPlaceDetail(place.getId());
+    }
+
+    public static PlaceDetailActivity getInstance() {
+        return mActivity;
     }
 
     private void initView() {
@@ -174,7 +186,7 @@ public class PlaceDetailActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.user_info_ll:
-                Helper.toast(mActivity, "go user info");
+//                Helper.toast(mActivity, "go user info");
                 break;
         }
     }

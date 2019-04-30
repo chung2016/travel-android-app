@@ -45,4 +45,19 @@
     <string name="text_share">分享</string>
     <string name="text_type">類型</string>
     <string name="author_comment">作者評論</string>
+    <string name="other_comment">其他評論</string>
+    <string name="place_type_prompt">請選擇種類</string>
+    <string-array name="place_type_arrays">
+        <item>Shopping</item>
+        <item>Relax</item>
+        <item>Deluxe</item>
+        <item>Poor Travel</item>
+        <item>Photography</item>
+        <item>Historical</item>
+        <item>Food Hunter</item>
+        <item>Whatever</item>
+        <item>Tour Group</item>
+        <item>Adventurer</item>
+    </string-array>
+    <string name="add_success">新增成功</string>
 </resources>

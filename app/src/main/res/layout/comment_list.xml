@@ -5,37 +5,37 @@
     android:padding="5dp">
 
     <ImageView
-        android:id="@+id/iv_place_photo"
+        android:id="@+id/iv_user_photo"
         android:layout_width="85dp"
         android:layout_height="85dp"
         android:layout_margin="10dp"
         android:background="@android:color/darker_gray" />
 
     <TextView
-        android:id="@+id/tv_place_name"
+        android:id="@+id/tv_user_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dip"
-        android:layout_toLeftOf="@+id/tv_place_date"
-        android:layout_toRightOf="@+id/iv_place_photo"
-        android:text="@string/text_name"
+        android:layout_toLeftOf="@+id/tv_create_date"
+        android:layout_toRightOf="@+id/iv_user_photo"
+        android:text="@string/text_username"
         android:textColor="@android:color/black"
         android:textSize="15dip"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/tv_place_location"
+        android:id="@+id/tv_user_message"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_place_name"
-        android:layout_toRightOf="@+id/iv_place_photo"
+        android:layout_below="@+id/tv_user_name"
+        android:layout_toRightOf="@+id/iv_user_photo"
         android:ellipsize="end"
-        android:text="@string/text_location"
+        android:text="@string/text_comment"
         android:textColor="@android:color/black"
         android:textSize="13dip" />
 
     <TextView
-        android:id="@+id/tv_place_date"
+        android:id="@+id/tv_create_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -44,5 +44,5 @@
         android:text="@string/text_created_at"
         android:textColor="@android:color/black"
         android:textSize="12dip" />
-    
+
 </RelativeLayout>

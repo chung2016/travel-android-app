@@ -232,12 +232,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+//        noinspection SimplifiableIfStatement
         if (id == R.id.miCreate) {
             try {
-//                Intent intent = new Intent(mActivity, PlaceEditActivity.class);
-////                intent.putExtra("isEditPlace", false);
-////                startActivity(intent);
+                Intent intent = new Intent(mActivity, PlaceFormActivity.class);
+                intent.putExtra("isEdit", false);
+                startActivity(intent);
             } catch (Exception e) {
                 e.printStackTrace();
             }

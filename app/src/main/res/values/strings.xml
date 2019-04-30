@@ -44,4 +44,20 @@
     <string name="text_share">Share</string>
     <string name="text_type">Type</string>
     <string name="author_comment">Author Comment</string>
+    <string name="other_comment">Other Comment</string>
+
+    <string name="place_type_prompt">Choose a Type</string>
+    <string-array name="place_type_arrays">
+        <item>Shopping</item>
+        <item>Relax</item>
+        <item>Deluxe</item>
+        <item>Poor Travel</item>
+        <item>Photography</item>
+        <item>Historical</item>
+        <item>Food Hunter</item>
+        <item>Whatever</item>
+        <item>Tour Group</item>
+        <item>Adventurer</item>
+    </string-array>
+    <string name="add_success">Add Success</string>
 </resources>

@@ -16,10 +16,9 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class PlaceListAdapter extends BaseAdapter {
-    private Context mContext;
     private List<Place> places;
-
-    MainActivity mainActivity;
+    private Context mContext;
+    private MainActivity mainActivity;
 
     public PlaceListAdapter(MainActivity mainActivity, List<Place> places) {
         this.mainActivity = mainActivity;
