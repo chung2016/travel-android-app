@@ -82,6 +82,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (mSharedPreferences.contains(Constants.SHARE_KEY_EMAIL)) {
+            mEtEmail.setText(mSharedPreferences.getString(Constants.SHARE_KEY_EMAIL, ""));
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_login:
