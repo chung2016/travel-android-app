@@ -24,3 +24,7 @@ Make a platform for user shared their travel place experience
 ## sensor
 - Camera [for capture user profile image and place image]
 - GPS [for get current address in typing place form]
+
+## Automation Testing
+- Ui Test(Login, Register, Add Place)
+- Unit Test for Models, Validation
