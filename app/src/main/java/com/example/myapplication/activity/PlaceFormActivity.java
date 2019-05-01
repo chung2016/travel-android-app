@@ -308,7 +308,7 @@ public class PlaceFormActivity extends AppCompatActivity implements View.OnClick
         }
         if (!validateFields(place.getLocation())) {
             err++;
-            til_place_location.setError(getResources().getText(R.string.name_empty));
+            til_place_location.setError(getResources().getText(R.string.location_empty));
         }
         if (err == 0) {
             processForm();

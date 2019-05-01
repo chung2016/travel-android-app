@@ -66,4 +66,6 @@
     <string name="confirm_delete">Do you really want to delete place?</string>
     <string name="delete_success">Delete Success</string>
     <string name="current_location">Current Location</string>
+    <string name="text_remember_me">Remember Me</string>
+    <string name="location_empty">Location should not be empty</string>
 </resources>

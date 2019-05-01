@@ -58,11 +58,19 @@
 
             </android.support.design.widget.TextInputLayout>
 
+            <CheckBox
+                android:id="@+id/remember_me"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ti_password"
+                android:layout_marginTop="@dimen/button_margin"
+                android:text="@string/text_remember_me" />
+
             <Button
                 android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ti_password"
+                android:layout_below="@+id/remember_me"
                 android:layout_marginTop="@dimen/button_margin"
                 android:paddingLeft="@dimen/button_padding"
                 android:paddingRight="@dimen/button_padding"

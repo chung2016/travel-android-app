@@ -66,4 +66,6 @@
     <string name="text_confirm">確認</string>
     <string name="delete_success">刪除成功</string>
     <string name="current_location">當前位置</string>
+    <string name="text_remember_me">記住我</string>
+    <string name="location_empty">地點不能為空白!</string>
 </resources>

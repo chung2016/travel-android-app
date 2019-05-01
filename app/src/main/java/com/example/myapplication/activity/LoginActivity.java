@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
@@ -39,6 +40,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private final static int ALL_PERMISSIONS_RESULT = 101;
     private ProgressDialog loadingDialog;
     private User user;
+    private static LoginActivity mActivity;
 
     private EditText mEtEmail;
     private EditText mEtPassword;
@@ -47,10 +49,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextInputLayout mTiEmail;
     private TextInputLayout mTiPassword;
     private ProgressBar mProgressBar;
+    private CheckBox remember_me;
 
     private String jsonWebToken;
-
-    LoginActivity mActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +69,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mTiPassword = (TextInputLayout) findViewById(R.id.ti_password);
         mProgressBar = (ProgressBar) findViewById(R.id.progress);
         mBtGoRegister = (Button) findViewById(R.id.btn_go_register);
+        remember_me = (CheckBox) findViewById(R.id.remember_me);
         mBtLogin.setOnClickListener(this);
         mBtGoRegister.setOnClickListener(this);
 
@@ -78,6 +80,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         if (mSharedPreferences.contains(Constants.SHARE_KEY_TOKEN)) {
             jsonWebToken = mSharedPreferences.getString(Constants.SHARE_KEY_TOKEN, "");
+        }
+        if (mSharedPreferences.contains(Constants.SHARE_KEY_RM)) {
+            if (mSharedPreferences.getBoolean(Constants.SHARE_KEY_RM, true)) {
+                remember_me.setChecked(true);
+            }
         }
     }
 
@@ -118,7 +125,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             disableForm();
             loginProcess();
         } else {
-            showSnackBarMessage((String) getResources().getText(R.string.password_empty));
+            showSnackBarMessage((String) getResources().getText(R.string.data_valid));
         }
     }
 
@@ -165,7 +172,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                                             SharedPreferences.Editor editor = mSharedPreferences.edit();
                                             editor.putString(Constants.SHARE_KEY_TOKEN, jsonWebToken);
-                                            editor.putString(Constants.SHARE_KEY_EMAIL, user.getEmail());
+                                            editor.putBoolean(Constants.SHARE_KEY_RM, remember_me.isChecked() ? true : false);
+                                            if (remember_me.isChecked()==true) {
+                                                editor.putString(Constants.SHARE_KEY_EMAIL, user.getEmail());
+                                            } else {
+                                                editor.remove(Constants.SHARE_KEY_EMAIL);
+                                            }
+
+
                                             editor.commit();
 
                                             Helper.toast(mActivity, getResources().getString(R.string.login_success));
@@ -215,6 +229,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void enableForm() {
         loadingDialog.dismiss();
+    }
+
+    public static LoginActivity getInstance() {
+        return mActivity;
     }
 
     private void requestAppPermissions() {
