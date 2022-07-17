@@ -1,8 +1,8 @@
-# 300cem-Assignment
-This project provide a android app frontend. The backend server will connent to 304CEM Web API project see below.
+# Travel Android App
+This project provide a android app frontend. The backend server will connent to Web API project see below.
 
 ## Web API
-https://github.com/187109370/304cem-assigment
+https://github.com/chung2016/travel
 
 ## Topic
 Make a platform for user shared their travel place experience
